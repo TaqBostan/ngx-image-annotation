@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": ["image-labeling"],
             "outputPath": "dist/demo",
             "index": "demo/index.html",
             "browser": "demo/demo.ts",

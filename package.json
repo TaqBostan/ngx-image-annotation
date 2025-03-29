@@ -28,5 +28,8 @@
     "@angular/router": "^19.2.0",
     "ng-packagr": "^19.2.0",
     "typescript": "~5.7.2"
+  },
+  "dependencies": {
+    "image-labeling": "^0.0.4"
   }
 }
