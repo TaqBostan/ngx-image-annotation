@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AnnotatorComponent } from "../annotator/src/annotator.component";
 import { Circle, Dot, Ellipse, Polygon, Rectangle, Shape } from 'image-labeling';
@@ -18,8 +18,19 @@ let d = new Dot([123, 223], ['raspberry'], "rgba(0,0,0,0.4)");
   styleUrl: './demo.component.css'
 })
 export class DemoComponent {
-  title = 'demo';
-  img2 = '/ic.png';
+  @ViewChild('annotator') annotator!:AnnotatorComponent;
   img = imgUrl;
   shapes: Shape[] = [r, p, c, e, d];
+  shapes2: Shape[] = [p];
+
+  changeImage = () => {
+    if (this.img === imgUrl) {
+      this.img = img2;
+      this.shapes = [c];
+    }
+    else if (this.img === img2) {
+      this.img = imgUrl;
+      this.shapes = [r, p, c, e, d];
+    }
+  }
 }

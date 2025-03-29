@@ -18,7 +18,10 @@ export class AnnotatorComponent {
   @Output() onEdited = new EventEmitter<Shape>();
   @Output() onSelected = new EventEmitter<Shape>();
   @Output() onContextMenu = new EventEmitter<Shape>();
-  @Input() imageUrl?: string;
+  @Input() set imageUrl(value: string) { 
+    Director.instance?.clear();
+    if(value) this.onload(value); 
+  }
   @Input() shapes?: Shape[] | any[];
   @Input() naturalSize?: boolean;
   @Input() width?: number;
@@ -28,12 +31,54 @@ export class AnnotatorComponent {
   @Input() shortcut?: Shortcut;
 
   constructor(private elRef:ElementRef) {}
-  ngAfterViewInit() {
-    if (this.imageUrl) this.onload();
+  
+  stopAll = () => {
+    let director = this.getDirector();
+    director.stopDraw();
+    director.stopEdit();
   }
 
-  onload() {
-    let svg = this.getWrapper(), container = this.getContainer(), imageUrl = this.imageUrl!;
+  drawRectangle() {
+    this.stopAll();
+    this.getDirector().startDraw(new Rectangle());
+  }
+
+  drawPolygon() {
+    this.stopAll();
+    this.getDirector().startDraw(new Polygon());
+  }
+
+  drawCircle() {
+    this.stopAll();
+    this.getDirector().startDraw(new Circle());
+  }
+
+  drawEllipse() {
+    this.stopAll();
+    this.getDirector().startDraw(new Ellipse());
+  }
+
+  drawDot() {
+    this.stopAll();
+    this.getDirector().startDraw(new Dot());
+  }
+
+  stop = this.stopAll
+  stopEdit = () => this.getDirector().stopEdit()
+  edit = (id: number) => this.getDirector().edit(id)
+  delete = (id: number) => this.getDirector().removeById(id)
+  updateCategories = (id: number, categories: string[], color?: string) => this.getDirector().updateCategories(id, categories, color)
+
+  zoom = (factor: number, relative: boolean = true) => {
+    let director = this.getDirector();
+    factor = director.setSizeAndRatio(factor, relative);
+    director.zoom(factor);
+  }
+
+  getShapes = () => this.getDirector().getShapes()
+
+  onload(imageUrl: string) {
+    let svg = this.getWrapper(), container = this.getContainer();
     let onloaded = (ev: Event) => {
       if (!ev?.currentTarget || !svg.innerHTML) return;
       let target = (ev!.detail?.testTarget || ev!.currentTarget) as SVGImageElement, 
@@ -74,7 +119,6 @@ export class AnnotatorComponent {
 
       Director.init(svg, statics, container);
       this.drawShapes(this.shapes);
-      // props.setHandles({ ...getHandles(), container });
       //props.onReady?.({ ...getHandles(), container });
 
       let actions = [

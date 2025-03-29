@@ -2,7 +2,21 @@
 </style>
 
 <main>
-  <annotator
+  <button (click)="changeImage()">Change image</button>
+  <button (click)="annotator.drawRectangle()">Add Rectangle</button>
+  <button (click)="annotator.drawPolygon()">Add Polygon</button>
+  <button (click)="annotator.drawCircle()">Add Circle</button>
+  <button (click)="annotator.drawEllipse()">Add Ellipse</button>
+  <button (click)="annotator.drawDot()">Add Dot</button>
+  <button (click)="annotator.stop()">Stop</button>
+  <button (click)="annotator.stopEdit()">Edit Done</button>
+  <button (click)="annotator.zoom(1.25)">Zoom in</button>
+  <button (click)="annotator.zoom(0.8)">Zoom out</button>
+  <button (click)="this.shapes = annotator!.getShapes();">Get shapes</button>
+  <button (click)="this.shapes = shapes2;">change shapes</button>
+
+  <annotator  
+  #annotator
   [naturalSize]="true"
   [imageUrl]="img"
   [shapes]="shapes"
