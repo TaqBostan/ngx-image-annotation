@@ -76,6 +76,15 @@ export class AnnotatorComponent {
       this.drawShapes(this.shapes);
       // props.setHandles({ ...getHandles(), container });
       //props.onReady?.({ ...getHandles(), container });
+
+      let actions = [
+        { type: ActType.Added, func: (shape: Shape) => this.onAdded.emit(shape) },
+        { type: ActType.Edited, func: (shape: Shape) => this.onEdited.emit(shape) },
+        { type: ActType.Selected, func: (shape: Shape) => this.onSelected.emit(shape) },
+        { type: ActType.CtxMenu, func: (shape: Shape) => this.onContextMenu.emit(shape) }
+      ]
+      Director.setActions(actions);
+
     }
     container.setAttribute('data-img', Util.fileName(imageUrl))
     var image = svg.image(imageUrl, onloaded).size('', '').attr('onmousedown', 'return false').attr('oncontextmenu', 'return false');
