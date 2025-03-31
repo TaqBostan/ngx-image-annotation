@@ -15,17 +15,21 @@
   <button (click)="this.shapes = annotator.getShapes();">Get shapes</button>
   <button (click)="this.shapes = shapes2;">change shapes</button>
 
-  <annotator  
-  #annotator
-  [naturalSize]="true"
-  [imageUrl]="img"
-  [shapes]="shapes"
-  [width]="700"
-  [height]="400"
-  [hideBorder]="false"
-  [shortcut]="{del: true, bksp: true }"
-  (onAdded)="showDialog($event)"
-  (onContextMenu)="showDialog($event)"/>
+  <div style="border-style: outset;width: fit-content;margin: 10px;">
+    <annotator  
+    #annotator
+    [naturalSize]="true"
+    [imageUrl]="img"
+    [shapes]="shapes"
+    [width]="950"
+    [height]="400"
+    [hideBorder]="false"
+    [shortcut]="{del: true, bksp: true }"
+    (onAdded)="showDialog($event)"
+    (onContextMenu)="showDialog($event)"/>
+  </div>
+  
+  <div>{{jsonShapes}}</div>
 
   <ng-container *ngIf="dialogData.show">
     <app-dialog 

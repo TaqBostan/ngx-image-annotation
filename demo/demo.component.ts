@@ -25,6 +25,7 @@ export class DemoComponent {
   shapes: Shape[] = [r, p, c, e, d];
   shapes2: Shape[] = [p];
   dialogData: { show: boolean, shape: Shape | undefined } = { show: false, shape: undefined }
+  get jsonShapes() { return JSON.stringify(this.shapes, null, 2); }
 
   changeImage = () => {
     if (this.img === imgUrl) {
