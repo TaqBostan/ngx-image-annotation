@@ -31,7 +31,10 @@
     <app-dialog 
     #dialog
     [shape]="dialogData.shape!"
-    (hide)="dialogData.show = false;"></app-dialog>
+    (hide)="dialogData.show = false;"
+    (edit)="annotator.edit(dialogData.shape!.id);"
+    (delete)="annotator!.delete(dialogData.shape!.id);"
+    (updateCategories)="annotator.updateCategories(dialogData.shape!.id, $event)"/>
   </ng-container>
 </main>
 
