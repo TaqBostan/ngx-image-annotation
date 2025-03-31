@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-import { Director, Shape, Polygon, Rectangle, Circle, Ellipse, Dot, Shortcut, ActType, Util } from 'image-labeling'
+import { Director, Shape, Polygon, Rectangle, Circle, Ellipse, Dot, Shortcut, ActType, Util, ImageEl, SVGSVGEl } from 'image-labeling'
 
 @Component({
   selector: 'annotator',
@@ -14,6 +14,7 @@ import { Director, Shape, Polygon, Rectangle, Circle, Ellipse, Dot, Shortcut, Ac
 })
 export class AnnotatorComponent {
   getDirector = () => Director.instance!;
+  @Output() onReady = new EventEmitter();
   @Output() onAdded = new EventEmitter<Shape>();
   @Output() onEdited = new EventEmitter<Shape>();
   @Output() onSelected = new EventEmitter<Shape>();
@@ -79,18 +80,17 @@ export class AnnotatorComponent {
 
   onload(imageUrl: string) {
     let svg = this.getWrapper(), container = this.getContainer();
-    let onloaded = (ev: Event) => {
-      if (!ev?.currentTarget || !svg.innerHTML) return;
-      let target = (ev!.detail?.testTarget || ev!.currentTarget) as SVGImageElement, 
-        src1 = container.getAttribute('data-img')!, src2 = imageUrl;
-      if (src1 !== Util.fileName(src2)) {
-        for (let i = 0; i < svg.children.length; i++) {
-          let child = svg.children[i], href = Util.fileName(child.getAttribute('href'));
-          if (href && src1 !== href) child.remove();
+    if(imageUrl === container.getAttribute('data-img')) return;
+    let onloaded = (target: ImageEl) => {
+      let src1 = container.getAttribute('data-img')!, src2 = imageUrl;
+      if (src1 !== src2) {
+        for (let i = 0; i < svg.node.children.length; i++) {
+          let child = svg.node.children[i], href = child.getAttribute('href');
+          if (href && Util.fileName(src1) !== Util.fileName(href)) child.remove();
         }
         return;
       }
-      let bb = target.getBBox();
+      let bb = target.bbox();
       let naturalWidth = bb.width, naturalHeight = bb.height, maxWidth = this.width, maxHeight = this.height, ratio = 1;
       svg.addClass('il-svg');
       Object.assign(container.style, {
@@ -119,7 +119,7 @@ export class AnnotatorComponent {
 
       Director.init(svg, statics, container);
       this.drawShapes(this.shapes);
-      //props.onReady?.({ ...getHandles(), container });
+      this.onReady.emit();
 
       let actions = [
         { type: ActType.Added, func: (shape: Shape) => this.onAdded.emit(shape) },
@@ -130,9 +130,9 @@ export class AnnotatorComponent {
       Director.setActions(actions);
 
     }
-    container.setAttribute('data-img', Util.fileName(imageUrl))
+    container.setAttribute('data-img', imageUrl)
     var image = svg.image(imageUrl, onloaded).size('', '').attr('onmousedown', 'return false').attr('oncontextmenu', 'return false');
-    image.addEventListener('testEvent', onloaded)
+    image.on('testEvent', (ev: CustomEvent) => onloaded(new ImageEl(ev.detail.testTarget)))
   }
 
   drawShapes(shapes?: Shape[] | any[]) {
@@ -156,7 +156,7 @@ export class AnnotatorComponent {
   }
 
   getWrapper() {
-    return this.elRef.nativeElement.querySelector('svg') as SVGSVGElement;
+    return new SVGSVGEl(this.elRef.nativeElement.querySelector('svg'));
   }
 
   getContainer() {
