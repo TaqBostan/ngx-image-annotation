@@ -12,7 +12,7 @@
   <button (click)="annotator.stopEdit()">Edit Done</button>
   <button (click)="annotator.zoom(1.25)">Zoom in</button>
   <button (click)="annotator.zoom(0.8)">Zoom out</button>
-  <button (click)="this.shapes = annotator!.getShapes();">Get shapes</button>
+  <button (click)="this.shapes = annotator.getShapes();">Get shapes</button>
   <button (click)="this.shapes = shapes2;">change shapes</button>
 
   <annotator  
@@ -23,7 +23,16 @@
   [width]="700"
   [height]="400"
   [hideBorder]="false"
-  [shortcut]="{del: true, bksp: true }"/>
+  [shortcut]="{del: true, bksp: true }"
+  (onAdded)="showDialog($event)"
+  (onContextMenu)="showDialog($event)"/>
+
+  <ng-container *ngIf="dialogData.show">
+    <app-dialog 
+    #dialog
+    [shape]="dialogData.shape!"
+    (hide)="dialogData.show = false;"></app-dialog>
+  </ng-container>
 </main>
 
 <router-outlet />

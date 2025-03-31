@@ -1,0 +1,13 @@
+<div class="dialog-bg" (click)="onClose()">
+    <div class="dialog" (click)="$event.stopPropagation()"
+        [ngStyle]="{ left: offset.X, top: offset.Y }">
+      <form [formGroup]="form">
+        <button (click)="onEdit()" style="background: #36A9AE">edit</button>
+        <button (click)="onDelete()" style="background: #F082AC">delete</button>
+        <div *ngFor="let skill of items['controls']; let i=index" class="checkbox-wrapper-1">
+         <input [id]="'chb' + i" type="checkbox" [formControl]="$any(skill)" class="substituted"/>
+         <label [htmlFor]="'chb' + i">{{categories[i]}}</label>
+        </div>
+       </form>
+    </div>
+  </div>
