@@ -26,7 +26,8 @@
     [hideBorder]="false"
     [shortcut]="{del: true, bksp: true }"
     (onAdded)="showDialog($event)"
-    (onContextMenu)="showDialog($event)"/>
+    (onContextMenu)="showDialog($event)"
+    (onReady)="annotator.drawRectangle()"/>
   </div>
   
   <div>{{jsonShapes}}</div>

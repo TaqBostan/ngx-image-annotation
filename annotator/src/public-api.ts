@@ -2,5 +2,6 @@
  * Public API Surface of annotator
  */
 
-export * from './annotator.service';
-export * from './annotator.component';
+import { Circle, Dot, Ellipse, Polygon, Rectangle, Shape } from 'image-labeling';
+import { AnnotatorComponent } from './annotator.component';
+export {AnnotatorComponent, Circle, Dot, Ellipse, Polygon, Rectangle, Shape}

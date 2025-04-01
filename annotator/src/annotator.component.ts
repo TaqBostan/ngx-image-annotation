@@ -21,6 +21,11 @@ export class AnnotatorComponent {
   @Output() onContextMenu = new EventEmitter<Shape>();
   @Input() set imageUrl(value: string) { 
     Director.instance?.clear();
+    if(this.getWrapper().node.children.length) {
+      let img = this.getWrapper().node.children[0] as SVGImageElement;
+      img.setAttribute('href', '');
+      this.getWrapper().node.innerHTML = '';
+    }
     if(value) this.onload(value); 
   }
   @Input() shapes?: Shape[] | any[];
@@ -80,16 +85,7 @@ export class AnnotatorComponent {
 
   onload(imageUrl: string) {
     let svg = this.getWrapper(), container = this.getContainer();
-    if(imageUrl === container.getAttribute('data-img')) return;
     let onloaded = (target: ImageEl) => {
-      let src1 = container.getAttribute('data-img')!, src2 = imageUrl;
-      if (src1 !== src2) {
-        for (let i = 0; i < svg.node.children.length; i++) {
-          let child = svg.node.children[i], href = child.getAttribute('href');
-          if (href && Util.fileName(src1) !== Util.fileName(href)) child.remove();
-        }
-        return;
-      }
       let bb = target.bbox();
       let naturalWidth = bb.width, naturalHeight = bb.height, maxWidth = this.width, maxHeight = this.height, ratio = 1;
       svg.addClass('il-svg');
@@ -130,7 +126,6 @@ export class AnnotatorComponent {
       Director.setActions(actions);
 
     }
-    container.setAttribute('data-img', imageUrl)
     var image = svg.image(imageUrl, onloaded).size('', '').attr('onmousedown', 'return false').attr('oncontextmenu', 'return false');
     image.on('testEvent', (ev: CustomEvent) => onloaded(new ImageEl(ev.detail.testTarget)))
   }
