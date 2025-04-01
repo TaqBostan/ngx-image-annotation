@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule, NgFor, NgStyle } from '@angular/common';
-import { Shape } from 'image-labeling';
+import { Shape } from '../../dist/ngx-image-annotation';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({

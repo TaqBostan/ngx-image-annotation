@@ -4,8 +4,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "annotator": [
-        "./dist/annotator"
+      "ngx-image-annotation": [
+        "./dist/ngx-image-annotation"
       ]
     },
     "outDir": "./dist/out-tsc",

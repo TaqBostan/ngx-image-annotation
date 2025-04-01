@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AnnotatorComponent } from "../annotator/src/annotator.component";
+import { AnnotatorComponent } from "../dist/ngx-image-annotation";
 import { DialogComponent } from "./dialog/dialog.component";
 import { Circle, Dot, Ellipse, Polygon, Rectangle, Shape } from 'image-labeling';
 import { NgIf } from '@angular/common';
