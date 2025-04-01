@@ -1,0 +1,9 @@
+ng build ngx-image-annotation
+cd dist/ngx-image-annotation
+npm publish
+-----------------
+cd ./dist/ngx-image-annotation
+npm link
+
+cd my-app
+npm link ngx-image-annotation
