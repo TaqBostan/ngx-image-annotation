@@ -23,6 +23,10 @@ Then you can just import the component:
 
 ```js
 import { AnnotatorComponent } from "ngx-image-annotation";
+
+@Component({
+  imports: [AnnotatorComponent],
+  ...
 ```
 
 and use it as below:
