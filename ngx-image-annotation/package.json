@@ -1,10 +1,6 @@
 {
   "name": "ngx-image-annotation",
-  "version": "1.1.2",
-  "peerDependencies": {
-    "@angular/common": "^19.2.0",
-    "@angular/core": "^19.2.0"
-  },
+  "version": "1.1.4",
   "dependencies": {
     "image-labeling": "^0.0.6"
   },
@@ -15,5 +11,12 @@
     "tag",
     "image"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TaqBostan/ngx-image-annotation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TaqBostan/ngx-image-annotation/issues"
+  },
   "sideEffects": false
 }

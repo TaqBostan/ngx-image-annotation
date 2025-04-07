@@ -1,4 +1,4 @@
-A comprehensive Angular component for tagging images. Check out [the demo](https://stvs88-4200.csb.app/) for some examples.
+A comprehensive Angular component for tagging images. Check out [the demo](https://pdkds7-4200.csb.app/) for some examples.
 
 ## Features
 
