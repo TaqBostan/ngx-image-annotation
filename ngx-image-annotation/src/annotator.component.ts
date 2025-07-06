@@ -20,12 +20,7 @@ export class AnnotatorComponent {
   @Output() onSelected = new EventEmitter<Shape>();
   @Output() onContextMenu = new EventEmitter<Shape>();
   @Input() set imageUrl(value: string) { 
-    Director.instance?.clear();
-    if(this.getWrapper().node.children.length) {
-      let img = this.getWrapper().node.children[0] as SVGImageElement;
-      img.setAttribute('href', '');
-      this.getWrapper().node.innerHTML = '';
-    }
+    Director.clear(this.elRef.nativeElement.querySelector('svg'));
     if(value) this.onload(value); 
   }
   @Input() shapes?: Shape[] | any[];
@@ -35,6 +30,7 @@ export class AnnotatorComponent {
   @Input() discRadius?: number;
   @Input() hideBorder?: boolean;
   @Input() shortcut?: Shortcut;
+  @Input() categoryOpt?: { vertical: 'top' | 'middle' | 'bottom' } | undefined;
 
   constructor(private elRef:ElementRef) {}
   
@@ -110,7 +106,8 @@ export class AnnotatorComponent {
         ratio, 
         discRadius: this.discRadius || 5, 
         hb: this.hideBorder,
-        shortcut: this.shortcut
+        shortcut: this.shortcut,
+        categoryOpt: this.categoryOpt || { vertical: 'top' }
       }
 
       Director.init(svg, statics, container);

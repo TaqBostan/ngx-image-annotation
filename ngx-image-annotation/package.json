@@ -1,8 +1,8 @@
 {
   "name": "ngx-image-annotation",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "dependencies": {
-    "image-labeling": "^0.0.6"
+    "image-labeling": "^1.0.1"
   },
   "keywords": [
     "angular",
