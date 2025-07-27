@@ -25,8 +25,8 @@ export class AnnotatorComponent {
   }
   @Input() shapes?: Shape[] | any[];
   @Input() naturalSize?: boolean;
-  @Input() width?: number;
-  @Input() height?: number;
+  @Input() width?: number | string;
+  @Input() height?: number | string;
   @Input() discRadius?: number;
   @Input() hideBorder?: boolean;
   @Input() shortcut?: Shortcut;
@@ -83,20 +83,21 @@ export class AnnotatorComponent {
     let svg = this.getWrapper(), container = this.getContainer();
     let onloaded = (target: ImageEl) => {
       let bb = target.bbox();
-      let naturalWidth = bb.width, naturalHeight = bb.height, maxWidth = this.width, maxHeight = this.height, ratio = 1;
+      let naturalWidth = bb.width, naturalHeight = bb.height, ratio = 1, sw = container.parentElement?.scrollWidth ?? 0, 
+        width = Util.toPx(sw, this.width), height = Util.toPx(sw, this.height);
       svg.addClass('il-svg');
       Object.assign(container.style, {
-        width: (this.width || naturalWidth) + 'px',
-        height: (this.height || naturalHeight) + 'px',
+        width: (width || naturalWidth) + 'px',
+        height: (height || naturalHeight) + 'px',
         overflow: 'hidden',
         backgroundColor: '#e6e6e6'
       });
       if (!this.naturalSize) {
-        if (!maxWidth) maxWidth = container.scrollWidth;
-        if (!maxHeight) maxHeight = container.scrollHeight;
-        if (maxWidth! / maxHeight! > bb.width / bb.height)
-          ratio = Math.min(maxHeight!, bb.height) / naturalHeight;
-        else ratio = Math.min(maxWidth!, bb.width) / naturalWidth;
+        if (!width) width = container.scrollWidth;
+        if (!height) height = container.scrollHeight;
+        if (width! / height! > bb.width / bb.height)
+          ratio = Math.min(height!, bb.height) / naturalHeight;
+        else ratio = Math.min(width!, bb.width) / naturalWidth;
       }
       target.size('100%', '100%');
       
@@ -130,16 +131,17 @@ export class AnnotatorComponent {
   drawShapes(shapes?: Shape[] | any[]) {
     let director = this.getDirector();
     if (!shapes) return;
+    director.setMaxId(Math.max(...shapes.map(c => c.id ?? 0)));
     let rectangles = shapes.filter(s => s instanceof Rectangle || s.type === 'rectangle')
-      .map(s => new Rectangle([...s.points], s.categories, s.color));
+      .map(s => new Rectangle([...s.points], s.categories, s.color, s.id));
     let polygons = shapes.filter(s => s instanceof Polygon || s.type === 'polygon')
-      .map(s => new Polygon([...s.points], s.categories, s.color));
+      .map(s => new Polygon([...s.points], s.categories, s.color, s.id));
     let circles = shapes.filter(s => s instanceof Circle || s.type === 'circle')
-      .map(s => new Circle(s.centre, s.radius, s.categories, s.color));
+      .map(s => new Circle(s.centre, s.radius, s.categories, s.color, s.id));
     let ellipses = shapes.filter(s => s instanceof Ellipse || s.type === 'ellipse')
-      .map(s => new Ellipse(s.centre, s.radiusX, s.radiusY, s.categories, s.phi || 0, s.color));
+      .map(s => new Ellipse(s.centre, s.radiusX, s.radiusY, s.categories, s.phi || 0, s.color, s.id));
     let dots = shapes.filter(s => s instanceof Dot || s.type === 'dot')
-      .map(s => new Dot(s.position, s.categories, s.color));
+      .map(s => new Dot(s.position, s.categories, s.color, s.id));
     if (rectangles.length > 0) director.plot(rectangles);
     if (polygons.length > 0) director.plot(polygons);
     if (circles.length > 0) director.plot(circles);

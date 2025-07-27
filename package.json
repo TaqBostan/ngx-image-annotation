@@ -31,6 +31,6 @@
     "typescript": "~5.7.2"
   },
   "dependencies": {
-    "image-labeling": "^1.0.1"
+    "image-labeling": "^1.0.3"
   }
 }
