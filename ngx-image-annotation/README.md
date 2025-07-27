@@ -1,4 +1,4 @@
-A comprehensive Angular component for tagging images. Check out [the demo](https://pdkds7-4200.csb.app/) for some examples.
+A comprehensive Angular component for tagging images. Check out [the demo](https://codesandbox.io/p/devbox/annotation-pdkds7) for some examples.
 
 ## Features
 
