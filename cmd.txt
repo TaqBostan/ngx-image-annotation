@@ -11,10 +11,10 @@ npm unlink ngx-image-annotation
 -----------------
 How to change image-labeling and run npm start:
 
-tsconfig.json:
+tsconfig.json/paths:
 "image-labeling": ["../image-labeling/src"]
 
-tsconfig.lib.json:
+tsconfig.lib.json/paths:
 "image-labeling": ["../../image-labeling/src"]
 
 remove image-labeling from package.json and ngx-image-annotation/package.json
